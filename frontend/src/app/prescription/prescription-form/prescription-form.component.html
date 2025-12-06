@@ -1,0 +1,75 @@
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h4 class="mb-0">{{ isEditMode ? 'Edit' : 'New' }} Prescription</h4>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Prescription Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="prescriptionDate"
+                        [ngClass]="{'is-invalid': submitted && f['prescriptionDate'].errors}">
+                    <div *ngIf="submitted && f['prescriptionDate'].errors" class="invalid-feedback">
+                        <div *ngIf="f['prescriptionDate'].errors['required']">Date is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Patient Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="patientName"
+                        [ngClass]="{'is-invalid': submitted && f['patientName'].errors}">
+                    <div *ngIf="submitted && f['patientName'].errors" class="invalid-feedback">
+                        <div *ngIf="f['patientName'].errors['required']">Name is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Age <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" formControlName="patientAge"
+                        [ngClass]="{'is-invalid': submitted && f['patientAge'].errors}">
+                    <div *ngIf="submitted && f['patientAge'].errors" class="invalid-feedback">
+                        <div *ngIf="f['patientAge'].errors['required']">Age is required</div>
+                        <div *ngIf="f['patientAge'].errors['min']">Age must be positive</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                    <select class="form-select" formControlName="patientGender"
+                        [ngClass]="{'is-invalid': submitted && f['patientGender'].errors}">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div *ngIf="submitted && f['patientGender'].errors" class="invalid-feedback">
+                        <div *ngIf="f['patientGender'].errors['required']">Gender is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Diagnosis</label>
+                <textarea class="form-control" formControlName="diagnosis" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Medicines</label>
+                <textarea class="form-control" formControlName="medicines" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Next Visit Date</label>
+                <input type="date" class="form-control" formControlName="nextVisitDate">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" routerLink="/prescriptions">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ loading ? 'Saving...' : 'Save Prescription' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

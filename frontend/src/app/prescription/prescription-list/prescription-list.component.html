@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Prescriptions</h2>
+    <button class="btn btn-primary" routerLink="/prescriptions/new">
+        <i class="bi bi-plus-lg"></i> New Prescription
+    </button>
+</div>
+
+<!-- Filter Section -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Start Date</label>
+                <input type="date" class="form-control" formControlName="startDate">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">End Date</label>
+                <input type="date" class="form-control" formControlName="endDate">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-secondary me-2">Filter</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="resetFilter()">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Patient Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Diagnosis</th>
+                        <th>Next Visit</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of prescriptions">
+                        <td>{{ p.prescriptionDate | date }}</td>
+                        <td>{{ p.patientName }}</td>
+                        <td>{{ p.patientAge }}</td>
+                        <td>{{ p.patientGender }}</td>
+                        <td>{{ p.diagnosis }}</td>
+                        <td>{{ p.nextVisitDate | date }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-2"
+                                [routerLink]="['/prescriptions/edit', p.id]">
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(p.id!)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="prescriptions.length === 0">
+                        <td colspan="7" class="text-center py-4">No prescriptions found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="card-footer d-flex justify-content-between align-items-center" *ngIf="totalElements > 0">
+        <div>
+            Showing {{ page * size + 1 }} to {{ getEndIndex() }} of {{ totalElements }} entries
+        </div>
+        <nav>
+            <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="page === 0">
+                    <button class="page-link" (click)="onPageChange(page - 1)">Previous</button>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page + 1 }} of {{ totalPages }}</span>
+                </li>
+                <li class="page-item" [class.disabled]="page === totalPages - 1">
+                    <button class="page-link" (click)="onPageChange(page + 1)">Next</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<app-confirmation-modal *ngIf="showDeleteModal" title="Delete Prescription"
+    message="Are you sure you want to delete this prescription?" (confirm)="confirmDelete()"
+    (cancel)="closeDeleteModal()">
+</app-confirmation-modal>

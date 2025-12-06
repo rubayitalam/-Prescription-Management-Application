@@ -1,0 +1,14 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="border-end bg-white" id="sidebar-wrapper" style="width: 250px; min-height: 100vh;">
+        <app-sidebar></app-sidebar>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper" class="w-100">
+        <app-header></app-header>
+        <div class="container-fluid p-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
